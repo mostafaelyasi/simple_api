@@ -1,10 +1,9 @@
-# main.py 
+#main.py 
 from fastapi import FastAPI 
 from dmidecode import DMIDecode
 import subprocess
 import os 
 app = FastAPI(title="Simple API") 
-
 
 @app.get("/{item_id}") 
 async def read_item(item_id: str): 
