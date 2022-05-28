@@ -14,8 +14,6 @@ services:
       - SYS_RAWIO
     ports:
       - "8765:80"
-    devices:
-      - "/dev/mem:/dev/mem"
     volumes:
       - /dev/mem:/dev/mem
       - /:/rootfs:ro
@@ -24,7 +22,7 @@ services:
 #   command:
 #     - uvicorn app.main:app --host 0.0.0.0
     healthcheck: 
-      test: curl "http://localhost:80/hw" | grep -iq "Info"
+      test: curl "http://localhost:80/meminfo" | grep -iq "Info"
       interval: 10s 
       timeout: 5s 
       retries: 5   
