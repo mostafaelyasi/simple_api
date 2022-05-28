@@ -10,6 +10,7 @@ async def read_item(item_id: str):
     result={}
     itemid = item_id.lower()
     host_name = ''
+    dmi = DMIDecode()
     if os.path.exists('/host_name'):
       host_name = os.popen("cat /host_name").read().strip()
     if itemid == "meminfo" :
@@ -17,7 +18,6 @@ async def read_item(item_id: str):
       free_memory = os.popen("cat /proc/meminfo | grep -i 'memavailable' | grep -o '[[:digit:]]*' ").read().strip()
       result = {"Total Memory":total_memory,"Free Memory":free_memory}
     elif itemid == "hw" :
-      dmi = DMIDecode()
       bios_info = {'Manufacturer:': dmi.manufacturer(), \
               'Model:': dmi.model(), \
               'Firmware:': dmi.firmware(), \
@@ -28,7 +28,6 @@ async def read_item(item_id: str):
               'Total RAM:':'{} GB'.format(dmi.total_ram())}
       result = {"HW_Info from BIOS:":bios_info}
     elif itemid == "dmidecode":
-      dmi = DMIDecode()
       dmi_info = os.popen("dmidecode -t 0").readlines()
       list_info = []
       for line in dmi_info:
