@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  app:
+#    build:
+#      context: .
+#      dockerfile: ./Dockerfile
+    restart: "on-failure"
+    privileged: true
+    deploy:
+      replicas: 1
+      #mode: global
+    image: hesaba/simple_api:1.0.1
+    cap_add: 
+      - SYS_RAWIO
+    ports:
+      - "8765:80"
+    devices:
+      - "/dev/mem:/dev/mem"
+    volumes:
+      - /dev/mem:/dev/mem
+      - /:/rootfs:ro
+#      - ./app:/app
+      - /etc/hostname:/host_name:ro
+#   command:
+#     - uvicorn app.main:app --host 0.0.0.0
+    healthcheck: 
+      test: curl "http://localhost:80/hw" | grep -iq "Info"
+      interval: 10s 
+      timeout: 5s 
+      retries: 5   
